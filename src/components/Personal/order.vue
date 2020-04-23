@@ -10,85 +10,37 @@
         >
             <Form :model="formData">
                 <Row :gutter="32">
-                    <Col span="24">
-                        <FormItem label="订单名：" label-position="top">
-                            <Input v-model="formData.info.good.name" placeholder="订单名称" />
+                    <Col span="12">
+                        <FormItem label="数量：" label-position="top">
+                            <Input v-model="formData.info.quantity" placeholder="数量" />
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="24">
-                        <FormItem label="价格：" label-position="top">
-                            <Input v-model="formData.info.good.price" placeholder="价格" />
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="24">
-                        <FormItem label="收货人：" label-position="top">
-                            <Input v-model="formData.info.address.name" placeholder="收货人" />
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="24">
-                        <FormItem label="手机号码：" label-position="top">
-                            <Input v-model="formData.info.address.mobile" placeholder="手机号码" />
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="24">
-                        <FormItem label="邮编：" label-position="top">
-                            <Input v-model="formData.info.address.zipcode" placeholder="邮编" />
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="24">
-                        <FormItem label="地址：" label-position="top">
-                            <Input v-model="formData.info.address.address" placeholder="地址" />
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="24">
-                        <Button type="error" v-if="formData.info.status == 0 || formData.info.status == 1" @click="modal1 = true">取消订单</Button>
-                        <Button type="error" v-if="formData.info.status == 2" @click="modal2 = true">已签收</Button>
                     </Col>
                 </Row>
             </Form>
             <div class="demo-drawer-footer">
-                <Button style="margin-right: 8px" @click="value3 = false">关闭</Button>
+                <Button style="margin-right: 8px" @click="value3 = false">取消</Button>
+                <Button type="primary" @click="saveQuantity">保存</Button>
             </div>
-            <Modal
-                    v-model="modal1"
-                    title="Common Modal dialog box title"
-                    @on-ok="cancelOrder">
-                <p>取消当前订单吗</p>
-            </Modal>
-            <Modal
-                    v-model="modal2"
-                    title="Common Modal dialog box title"
-                    @on-ok="receivedGoods">
-                <p>是否已收到货</p>
-            </Modal>
         </Drawer>
     </div>
 
 </template>
 <script>
-    import { orderList, orderStatus } from '../../utils/index';
+    import { orderList1, orderStatus} from '../../utils/index';
     import { getToken } from '../../utils/function';
+    import {delectOrder, editOrder} from "../../utils";
+    import index from "iview/src/components/loading-bar";
     export default {
         data () {
             return {
+                formIndex: '',
                 modal1: false,
                 modal2: false,
                 columns7: [
                     {
                         title: '商品',
                         key: 'name',
+                        width: 300,
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
@@ -101,8 +53,49 @@
                         }
                     },
                     {
+                        title: '单价',
+                        key: 'price',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.good.price)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '数量',
+                        key: 'quantity',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.quantity)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '总价',
+                        key: 'totalPrice',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.totalPrice)
+                            ]);
+                        }
+                    },
+                    {
                         title: '收货人',
-                        width: 100,
                         key: 'name',
                         render: (h, params) => {
                             return h('div', [
@@ -116,25 +109,60 @@
                         }
                     },
                     {
-                        title: '当前状态',
-                        width: 100,
-                        key: 'name',
+                        title: '手机号',
+                        key: 'mobile',
                         render: (h, params) => {
-                            let orderStatus =  params.row.status
-                            let orderStatusText = ''
-                            if(orderStatus == 0 || orderStatus == 1) {
-                                orderStatusText = '未发货'
-                            } else if(orderStatus == 2) {
-                                orderStatusText = '已发货'
-                            } else if(orderStatus == 3) {
-                                orderStatusText = '已签收'
-                            } else if(orderStatus == 4) {
-                                orderStatusText = '已取消'
-                            }
                             return h('div', [
                                 h('Icon', {
                                     props: {
                                         type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.address.mobile)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '邮编',
+                        key: 'zipcode',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.address.zipcode)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '地址',
+                        key: 'address' ,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.address.address)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '状态',
+                        key: 'status',
+                        render: (h, params) => {
+                            let orderStatus =  params.row.status
+                            let orderStatusText = ''
+                            if(orderStatus == 1) {
+                                orderStatusText = '待支付'
+                            }
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'status',
                                     }
                                 }),
                                 h('strong', orderStatusText)
@@ -144,7 +172,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 100,
+                        width: 300,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
@@ -159,11 +187,57 @@
                                     on: {
                                         click: () => {
                                             this.show(params.index)
-                                            console.log(params.row)
+                                            console.log('params.index'+params)
+                                            // this.getTotalPrice(params.index,2)
                                             this.formData.info = params.row
                                         }
                                     }
-                                }, '查看订单')
+                                }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+
+                                            this.remove(params.index)
+                                        }
+                                    }
+                                }, '删除'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.bulidOrder(params.index)
+                                            this.formData.info = params.row
+                                        }
+                                    }
+                                }, '支付'),
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.cancleOrder(params.index)
+                                            this.formData.info = params.row
+                                        }
+                                    }
+                                }, '取消订单')
                             ]);
                         }
                     }
@@ -189,60 +263,133 @@
                             zipcode: '',
                             address: ''
                         },
-                        status: 0
-                    }
+                        status: 0,
+                        quantity: '',
+                        totalPrice:'',
+
+                    },
                 }
             }
         },
         methods: {
+            //     // index 修改的记录的索引
+            //     // number 修改过后的数量
+            //     getTotalPrice(index,number){
+            //         // 修改显示的数量
+            //         this.data6[index].quantity = number;
+            //         // 修改显示的总价
+            //         var totalPrice = number*this.data6[index].good.price
+            //         console.log("totalPrice"+totalPrice)
+            //         //修改数据库中的订单
+            //     },
             show (index) {
                 this.formData.id = this.data6[index].id
                 this.formData.name = this.data6[index].name
                 this.value3 = true
+                this.formIndex = index;
+                console.log(index)
             },
             // 获取订单列表
-            getOrderList() {
+            getOrderList1() {
                 let token = getToken();
-                orderList({
+                orderList1({
                     token
                 }).then((res) => {
                     let data = res.data;
                     if(data.code != 0){
                         this.$Message.error(data.msg);
                     }else{
-                        this.data6 = data.dataList
+                        this.data6 = data.dataList1
+                        // this.data6.forEach()
+                        console.log(this.data6)
                     }
                 })
             },
+            remove (index) {
+                console.log(this.data6[index])
+                if(confirm(`确定要将“ ${this.data6[index].good.name} ”订单删除吗? `))
+                {
+                    let token = getToken();
+                    delectOrder({
+                        token,
+                        id: this.data6[index].id
+                    }).then((res) => {
+                        let data = res.data;
+                        if(data.code != 0){
+                            this.$Message.error(data.msg);
+                        }else{
+                            this.$Message.success("删除订单成功");
+                            this.getOrderList1();
+                        }
+                    })
+                }
+            },
+            //支付
+            bulidOrder(index) {
+                this.alterOrderStatus(index,2)
+            },
+            //取消订单
+            cancleOrder(index) {
+                this.alterOrderStatus(index,3)
+            },
             // 改变订单状态
-            alterOrderStatus(status) {
+            alterOrderStatus(index,status) {
+                console.log('_____________________'+this.data6[index].id)
                 let token = getToken();
                 orderStatus({
                     token,
                     status,
-                    id:this.formData.id
+                    id:this.data6[index].id
                 }).then((res) => {
                     let data = res.data;
                     if(data.code != 0){
                         this.$Message.error(data.err);
                     }else{
-                        this.$Message.success('操作完成');
+                        this.$Message.success('支付成功！');
                         this.value3 = false
-                        this.getOrderList();
+                        this.getOrderList1();
                     }
                 })
             },
-            //取消订单
-            cancelOrder() {
-                this.alterOrderStatus(4)
-            },
-            //设置收货
-            receivedGoods() {
-                this.alterOrderStatus(3)
+            //     // index 修改的记录的索引
+            //     // number 修改过后的数量
+            //     getTotalPrice(index){
+            //         // 修改显示的数量
+            //         this.data6[index].quantity = number;
+            //         // 修改显示的总价
+            //         var totalPrice = number*this.data6[index].good.price
+            //         console.log("totalPrice"+totalPrice)
+            //         //修改数据库中的订单
+            //     },
+            // 保存数量
+            saveQuantity() {
+                var index = this.formIndex
+                var number = this.formData.info.quantity
+                var totalPrice = number*this.data6[index].good.price
+                console.log('totalPrice  '+totalPrice)
+                let token = getToken();
+                editOrder({
+                    token,
+                    id: this.data6[index].id,
+                    quantity: this.formData.info.quantity,
+                    totalPrice
+                }).then((res) => {
+                    console.log("this.data6[this.formIndex].id"+this.data6[index].id)
+                    let data = res.data;
+                    if(data.code != 0){
+                        this.$Message.error(data.msg);
+                    }else{
+                        this.$Message.success("保存成功");
+                        this.formData.quantity = '';
+                        this.value3 = false;
+                        this.getOrderList1();
+                    }
+                })
+
             }
         },
         mounted() {
-            this.getOrderList();
+            this.getOrderList1();
         }
     }
 </script>

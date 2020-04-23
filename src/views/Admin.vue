@@ -37,9 +37,9 @@
                                 <Submenu name="1">
                                     <template slot="title">
                                         <Icon type="ios-person"></Icon>
-                                        个人与用户管理
+                                        用户管理
                                     </template>
-                                    <MenuItem name="1-1" @click.native="handleSelect('users')">个人与用户管理</MenuItem>
+                                    <MenuItem name="1-1" @click.native="handleSelect('users')">用户管理</MenuItem>
                                 </Submenu>
                                 <Submenu name="2">
                                     <template slot="title">
@@ -79,7 +79,7 @@
             handleSelect(key) {
                 if(key == 'order'){
                     this.$router.push({
-                        path: '/admin'
+                        path: '/admin/order'
                     })
                 }else if(key == 'commodity'){
                     this.$router.push({

@@ -2,7 +2,7 @@
     <div class="category">
         <Table border :columns="columns7" :data="data6"></Table>
         <Drawer
-                title="订单管理"
+                title="购物车管理"
                 v-model="value3"
                 width="720"
                 :mask-closable="false"
@@ -26,7 +26,7 @@
 
 </template>
 <script>
-    import {editUser, orderList, orderStatus, saveNewUser} from '../../utils/index';
+    import { orderList, orderStatus} from '../../utils/index';
     import { getToken } from '../../utils/function';
     import {delectOrder, editOrder} from "../../utils";
     import index from "iview/src/components/loading-bar";
@@ -290,7 +290,7 @@
             },
             //取消订单
             bulidOrder(index) {
-                this.alterOrderStatus(index,2)
+                this.alterOrderStatus(index,1)
             },
              // 改变订单状态
              alterOrderStatus(index,status) {

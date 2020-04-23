@@ -89,8 +89,14 @@ export const delectOrder = data => post(`${baseUrl}/order/delete`, data);
 //购物车列表
 export const orderList = data => post(`${baseUrl}/order`, data);
 
+//订单列表
+export const orderList1 = data => post(`${baseUrl}/order1`, data);
+
 //历史购买记录
 export const orderList2 = data => post(`${baseUrl}/order2`, data);
+
+//管理员订单
+export const orderList3 = data => post(`${baseUrl}/order3`, data);
 
 //改变订单状态
 export const orderStatus = data => post(`${baseUrl}/order/status`, data);
