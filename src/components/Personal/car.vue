@@ -38,6 +38,25 @@
                 modal2: false,
                 columns7: [
                     {
+                        title: '图片',
+                        key: 'image',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('img', {
+                                    attrs:{
+                                        alt: 'yyy',
+                                        src: params.row.good.image
+                                    }
+                                })
+                            ]);
+                        }
+                    },
+                    {
                         title: '商品',
                         key: 'name',
                         width: 300,
@@ -173,7 +192,7 @@
                                             this.formData.info = params.row
                                         }
                                     }
-                                }, '编辑'),
+                                }, '修改数量'),
                                 h('Button', {
                                     props: {
                                         type: 'error',
@@ -219,7 +238,8 @@
                     info: {
                         good: {
                             name: '',
-                            price: ''
+                            price: '',
+                            image: ''
                         },
                         address: {
                             name: '',
@@ -227,7 +247,7 @@
                             zipcode: '',
                             address: ''
                         },
-                        status: 0,
+                        status: '',
                         quantity: '',
                         totalPrice:'',
 
@@ -288,13 +308,15 @@
                     })
                 }
             },
-            //取消订单
+            //购买
             bulidOrder(index) {
                 this.alterOrderStatus(index,1)
             },
              // 改变订单状态
              alterOrderStatus(index,status) {
                  console.log('_____________________'+this.data6[index].id)
+                 if(confirm(`确定要购买“ ${this.data6[index].good.name} ”吗? `))
+                 {
                  let token = getToken();
                  orderStatus({
                      token,
@@ -310,6 +332,7 @@
                          this.getOrderList();
                      }
                  })
+             }
              },
              //     // index 修改的记录的索引
              //     // number 修改过后的数量
@@ -325,27 +348,26 @@
              saveQuantity() {
                  var index = this.formIndex
                  var number = this.formData.info.quantity
-                 var totalPrice = number*this.data6[index].good.price
-                 console.log('totalPrice  '+totalPrice)
+                 var totalPrice = number * this.data6[index].good.price
+                 console.log('totalPrice  ' + totalPrice)
                  let token = getToken();
-                     editOrder({
-                         token,
-                         id: this.data6[index].id,
-                         quantity: this.formData.info.quantity,
-                         totalPrice
-                     }).then((res) => {
-                         console.log("this.data6[this.formIndex].id"+this.data6[index].id)
-                         let data = res.data;
-                         if(data.code != 0){
-                             this.$Message.error(data.msg);
-                         }else{
-                             this.$Message.success("保存成功");
-                             this.formData.quantity = '';
-                             this.value3 = false;
-                             this.getOrderList();
-                         }
-                     })
-
+                 editOrder({
+                     token,
+                     id: this.data6[index].id,
+                     quantity: this.formData.info.quantity,
+                     totalPrice
+                 }).then((res) => {
+                     console.log("this.data6[this.formIndex].id" + this.data6[index].id)
+                     let data = res.data;
+                     if (data.code != 0) {
+                         this.$Message.error(data.msg);
+                     } else {
+                         this.$Message.success("保存成功");
+                         this.formData.quantity = '';
+                         this.value3 = false;
+                         this.getOrderList();
+                     }
+                 })
              }
          },
         mounted() {

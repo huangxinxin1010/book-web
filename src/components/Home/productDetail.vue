@@ -14,12 +14,29 @@
                 <div class="tip">温馨提示：加入购物车或者购买后地址信息不能更改。</div>
                 <div class="bottom">
                     <Button type="success" @click="clickBuy">加入购物车</Button>
-                    <Button type="warning" style="margin-left: 20px" @click="Contrast">加入购物车</Button>
+                    <Button type="warning" style="margin-left: 20px" @click="clickBuy1">立即购买</Button>
                 </div>
                 <Modal
                         v-model="modal1"
                         title="选择收货人"
                         @on-ok="ok">
+                    <Form :model="formItem" :label-width="80">
+                        <FormItem label="收货人">
+                            <Select v-model="formItem.select" @on-change='selectAddress(formItem.select)'>
+                                <Option :value="item.id" v-for="item in this.selectList" :key="item.id">{{item.name}}</Option>
+                            </Select>
+                        </FormItem>
+                    </Form>
+                    <p>请确认您的信息：</p>
+                    <p>收货人：{{formItem.name}}</p>
+                    <p>手机号码：{{formItem.mobile}}</p>
+                    <p>邮编：{{formItem.zipcode}}</p>
+                    <p>收货地址：{{formItem.address}}</p>
+                </Modal>
+                <Modal
+                        v-model="modal2"
+                        title="选择收货人"
+                        @on-ok="ok1">
                     <Form :model="formItem" :label-width="80">
                         <FormItem label="收货人">
                             <Select v-model="formItem.select" @on-change='selectAddress(formItem.select)'>
@@ -60,7 +77,7 @@
 
 <script>
     import { getToken } from '../../utils/function';
-    import { createOrder, addressList, addressDetail, goodsDetail } from '../../utils/index'
+    import { createOrder, createOrder1,addressList, addressDetail, goodsDetail } from '../../utils/index'
     import topCont from '@/components/Home/top-cont';
     import menuVue from '@/components/Home/menu';
     import footerBlock from '@/components/Home/footerBlock';
@@ -77,6 +94,7 @@
         data() {
             return {
                 modal1: false,
+                modal2: false,
                 selectList: [],
                 formItem: {
                     select: '',
@@ -148,9 +166,38 @@
                     }
                 })
             },
+            ok1 () {
+
+                if(!this.$route.query.goodsId || this.$route.query.goodsId == ''){
+                    this.$Message.error("加入购物车失败，商品加载异常");
+                    return false
+                }
+                if(this.formItem.select == ''){
+                    this.$Message.error("加入购物车失败，您未选择收货地址");
+                    return false
+                }
+                let goodsId = this.id
+                let addressId = this.formItem.select
+                let token = getToken();
+                createOrder1({
+                    token,
+                    goodsId,
+                    addressId
+                }).then((res) => {
+                    let data = res.data;
+                    if(data.code != 0){
+                        this.$Message.error(data.err);
+                    }else{
+                        this.$Message.success('生成订单成功，请前往"个人中心-订单管理"支付');
+                    }
+                })
+            },
             // 点击立即购买
             clickBuy() {
                 this.getAddressList()
+            },
+            clickBuy1() {
+                this.getAddressList1()
             },
             // 获取收货地址
             getAddressList() {
@@ -167,6 +214,25 @@
                             return false
                         }
                         this.modal1 = true
+                        this.selectList = data.data.rows
+                        console.log(this.selectList)
+                    }
+                })
+            },
+            getAddressList1() {
+                let token = getToken();
+                addressList({
+                    token
+                }).then((res) => {
+                    let data = res.data;
+                    if(data.code != 0){
+                        this.$Message.error(data.msg);
+                    }else{
+                        if(data.data.rows.length <= 0){
+                            this.$Message.error("您未创建收货地址,请先到个人中心进行管理");
+                            return false
+                        }
+                        this.modal2 = true
                         this.selectList = data.data.rows
                         console.log(this.selectList)
                     }
@@ -192,21 +258,6 @@
                     }
                 })
             },
-            //对比
-            Contrast() {
-                let info = {
-                    id : this.id,
-                    name : this.name,
-                    author : this.author,
-                    publisher: this.publisher,
-                    isbn : this.isbn,
-                    sendareas : this.sendareas,
-                    image : this.image,
-                    price : this.price
-                }
-                this.$store.commit('addProduct',info)
-                this.$store.commit('isShow',1)
-            }
         },
         mounted() {
             this.getGoodsDetail()

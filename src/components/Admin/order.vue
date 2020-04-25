@@ -38,6 +38,24 @@
                 modal2: false,
                 columns7: [
                     {
+                        title: '用户名',
+                        key: 'username',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                // row是datelist，params是h的对象
+
+                                h('strong', params.row.user.username),
+
+
+                            ]);
+                        }
+                    },
+                    {
                         title: '商品',
                         key: 'name',
                         width: 300,
@@ -176,7 +194,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 200,
+                        width: 150,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
@@ -213,6 +231,9 @@
                         good: {
                             name: '',
                             price: ''
+                        },
+                        user: {
+                            username: ''
                         },
                         address: {
                             name: '',

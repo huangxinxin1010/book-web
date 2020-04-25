@@ -75,7 +75,6 @@
                     {
                         title: '角色',
                         key: 'role',
-                        width: 150,
                         render: (h, params) => {
                             let userRole =  params.row.role
                             let userRoleText = ''
@@ -101,20 +100,20 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show(params.index)
-                                        }
-                                    }
-                                }, '编辑'),
+                                // h('Button', {
+                                //     props: {
+                                //         type: 'primary',
+                                //         size: 'small'
+                                //     },
+                                //     style: {
+                                //         marginRight: '5px'
+                                //     },
+                                //     on: {
+                                //         click: () => {
+                                //             this.show(params.index)
+                                //         }
+                                //     }
+                                // }, '编辑'),
                                 h('Button', {
                                     props: {
                                         type: 'error',
@@ -125,7 +124,7 @@
                                             this.remove(params.index)
                                         }
                                     }
-                                }, '删除')
+                                }, '注销')
                             ]);
                         }
                     }
@@ -175,7 +174,7 @@
             remove (index) {
                 console.log(this.data6[index])
 
-                if(confirm(`确定要将“ ${this.data6[index].username} ”删除吗? `))
+                if(confirm(`用户注销后不可恢复，确定要将“ ${this.data6[index].username} ”用户注销吗? `))
                 {
                     let token = getToken();
                     delectUser({
@@ -186,7 +185,7 @@
                         if(data.code != 0){
                             this.$Message.error(data.msg);
                         }else{
-                            this.$Message.success("删除用户成功");
+                            this.$Message.success("注销用户成功");
                             this.getUserList1();
                         }
                     })
@@ -207,54 +206,54 @@
                 })
             },
             // 保存新用户
-            saveUser() {
-                let token = getToken();
-                // 新建
-                if(this.formData.id == '') {
-                    saveNewUser({
-                        token,
-                        username: this.formData.username,
-                        password: this.formData.password,
-                        question: this.formData.question,
-                        answer: this.formData.answer,
-                    }).then((res) => {
-                        let data = res.data;
-                        if(data.code != 0){
-                            this.$Message.error(data.msg);
-                        }else{
-                            this.$Message.success("保存成功");
-                            this.formData.username = '';
-                            this.formData.password = '';
-                            this.formData.question = '';
-                            this.formData.answer = '';
-                            this.value3 = false;
-                            this.getUserList1();
-                        }
-                    })
-                } else{
-                    editUser({
-                        token,
-                        id:this.formData.id,
-                        username: this.formData.username,
-                        password: this.formData.password,
-                        question: this.formData.question,
-                        answer: this.formData.answer,
-                    }).then((res) => {
-                        let data = res.data;
-                        if(data.code != 0){
-                            this.$Message.error(data.msg);
-                        }else{
-                            this.$Message.success("保存成功");
-                            this.formData.username = '';
-                            this.formData.password = '';
-                            this.formData.question = '';
-                            this.formData.answer = '';
-                            this.value3 = false;
-                            this.getUserList1();
-                        }
-                    })
-                }
-            }
+            // saveUser() {
+            //     let token = getToken();
+            //     // 新建
+            //     if(this.formData.id == '') {
+            //         saveNewUser({
+            //             token,
+            //             username: this.formData.username,
+            //             password: this.formData.password,
+            //             question: this.formData.question,
+            //             answer: this.formData.answer,
+            //         }).then((res) => {
+            //             let data = res.data;
+            //             if(data.code != 0){
+            //                 this.$Message.error(data.msg);
+            //             }else{
+            //                 this.$Message.success("保存成功");
+            //                 this.formData.username = '';
+            //                 this.formData.password = '';
+            //                 this.formData.question = '';
+            //                 this.formData.answer = '';
+            //                 this.value3 = false;
+            //                 this.getUserList1();
+            //             }
+            //         })
+            //     } else{
+            //         editUser({
+            //             token,
+            //             id:this.formData.id,
+            //             username: this.formData.username,
+            //             password: this.formData.password,
+            //             question: this.formData.question,
+            //             answer: this.formData.answer,
+            //         }).then((res) => {
+            //             let data = res.data;
+            //             if(data.code != 0){
+            //                 this.$Message.error(data.msg);
+            //             }else{
+            //                 this.$Message.success("保存成功");
+            //                 this.formData.username = '';
+            //                 this.formData.password = '';
+            //                 this.formData.question = '';
+            //                 this.formData.answer = '';
+            //                 this.value3 = false;
+            //                 this.getUserList1();
+            //             }
+            //         })
+            //     }
+            // }
         },
         mounted() {
             this.getUserList1();

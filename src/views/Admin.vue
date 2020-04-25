@@ -39,18 +39,19 @@
                                         <Icon type="ios-person"></Icon>
                                         用户管理
                                     </template>
-                                    <MenuItem name="1-1" @click.native="handleSelect('users')">用户管理</MenuItem>
+                                    <MenuItem name="1-1" @click.native="handleSelect('user1')">个人管理</MenuItem>
+                                    <MenuItem name="1-2" @click.native="handleSelect('users')">用户管理</MenuItem>
                                 </Submenu>
                                 <Submenu name="2">
                                     <template slot="title">
-                                        <Icon type="ios-navigate"></Icon>
+                                        <Icon type="ios-keypad"></Icon>
                                         订单管理
                                     </template>
                                     <MenuItem name="2-1" @click.native="handleSelect('order')">全部订单</MenuItem>
                                 </Submenu>
                                 <Submenu name="3">
                                     <template slot="title">
-                                        <Icon type="ios-keypad"></Icon>
+                                        <Icon type="ios-book"></Icon>
                                         图书管理
                                     </template>
                                     <MenuItem name="3-1" @click.native="handleSelect('commodity')">图书列表</MenuItem>
@@ -96,6 +97,10 @@
                 }else if(key == 'users'){
                     this.$router.push({
                         path: '/admin/users'
+                    })
+                }else if(key == 'user1'){
+                    this.$router.push({
+                        path: '/admin/user1'
                     })
                 }
             }

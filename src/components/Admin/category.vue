@@ -116,7 +116,7 @@
                 // })
                 console.log(this.data6[index])
 
-                if(confirm(`确定要将 ${this.data6[index].name} 删除吗? `))
+                if(confirm(`确定要将 “${this.data6[index].name}” 删除吗? `))
                 {
                     let token = getToken();
                     delectCategory({

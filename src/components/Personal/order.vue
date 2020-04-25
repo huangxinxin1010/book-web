@@ -192,7 +192,7 @@
                                             this.formData.info = params.row
                                         }
                                     }
-                                }, '编辑'),
+                                }, '修改数量'),
                                 h('Button', {
                                     props: {
                                         type: 'error',
@@ -326,11 +326,14 @@
             },
             //支付
             bulidOrder(index) {
-                this.alterOrderStatus(index,2)
-            },
+                if(confirm(`正在支付，请点击“确定”！ `)) {
+                    this.alterOrderStatus(index, 2)
+                } },
             //取消订单
             cancleOrder(index) {
+                if(confirm(`取消订单后不可恢复，确定要取消“ ${this.data6[index].good.name} ”订单吗? `)) {
                 this.alterOrderStatus(index,3)
+                }
             },
             // 改变订单状态
             alterOrderStatus(index,status) {

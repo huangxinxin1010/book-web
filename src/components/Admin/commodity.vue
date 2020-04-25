@@ -104,6 +104,7 @@
                     {
                         title: '商品',
                         key: 'name',
+                        width: 300,
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
@@ -118,12 +119,72 @@
                     {
                         title: '作者',
                         key: 'author',
-                        width: 150,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.author)
+                            ]);
+                        }
                     },
                     {
                         title: '价格',
                         key: 'price',
-                        width: 150
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.price)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '出版社',
+                        key: 'publisher',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.publisher)
+                            ]);
+                        }
+                    },
+                    {
+                        title: 'ISBN',
+                        key: 'isbn',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.isbn)
+                            ]);
+                        }
+                    },
+                    {
+                        title: '发货地',
+                        key: 'sendareas',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.sendareas)
+                            ]);
+                        }
                     },
                     {
                         title: '操作',
@@ -204,7 +265,7 @@
             remove(index) {
                 console.log(this.data6[index])
 
-                if (confirm(`确定要将 ${this.data6[index].name} 删除吗? `)) {
+                if (confirm(`确定要将 “${this.data6[index].name} ”删除吗? `)) {
                     let token = getToken();
                     delectGoods({
                         token,

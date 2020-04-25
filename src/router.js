@@ -17,6 +17,7 @@ import History from './components/Personal/history'
 import Commodity from './components/Admin/commodity'
 import Category from './components/Admin/category'
 import Users from './components/Admin/users'
+import User1 from './components/Admin/user1'
 import Rank from './components/Admin/rank'
 import Address from './components/Personal/address'
 import myUser from './components/Personal/user'
@@ -81,6 +82,11 @@ export default new Router({
                     path: 'users',
                     name: 'users',
                     component: Users
+                },
+                {
+                    path: 'user1',
+                    name: 'user1',
+                    component: User1
                 },
                 {
                     path: 'order',

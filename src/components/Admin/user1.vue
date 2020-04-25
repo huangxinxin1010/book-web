@@ -1,11 +1,8 @@
 <template>
     <div class="category">
-        <div class="button" style="margin-bottom: 10px">
-            <Button type="primary" @click="addAddress">添加地址</Button>
-        </div>
         <Table border :columns="columns7" :data="data6"></Table>
         <Drawer
-                title="地址管理"
+                title="个人管理"
                 v-model="value3"
                 width="720"
                 :mask-closable="false"
@@ -14,101 +11,94 @@
             <Form :model="formData">
                 <Row :gutter="32">
                     <Col span="12">
-                    <FormItem label="姓名：" label-position="top">
-                        <Input v-model="formData.name" placeholder="输入姓名" />
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="12">
-                    <FormItem label="手机号：" label-position="top">
-                        <Input v-model="formData.mobile" placeholder="输入手机号" />
-                    </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="邮编：" label-position="top">
-                            <Input v-model="formData.zipcode" placeholder="输入邮编" />
+                        <FormItem label="密码：" label-position="top">
+                            <Input v-model="formData.password" aria-required="true" placeholder="输入密码" />
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="32">
                     <Col span="12">
-                    <FormItem label="地址：" label-position="top">
-                        <Input v-model="formData.address" placeholder="输入地址" />
-                    </FormItem>
+                        <FormItem label="问题：" label-position="top">
+                            <Input v-model="formData.question" placeholder="输入问题" />
+                        </FormItem>
+                    </Col>
+                </Row>
+                <Row :gutter="32">
+                    <Col span="12">
+                        <FormItem label="答案：" label-position="top">
+                            <Input v-model="formData.answer" placeholder="输入答案" />
+                        </FormItem>
                     </Col>
                 </Row>
             </Form>
             <div class="demo-drawer-footer">
                 <Button style="margin-right: 8px" @click="value3 = false">取消</Button>
-                <Button type="primary" @click="saveAddress">保存</Button>
+                <Button type="primary" @click="saveUser">保存</Button>
             </div>
         </Drawer>
     </div>
 
 </template>
 <script>
-    import { addressList, saveNewAddress, editAddress, delectAddress } from '../../utils/index';
+    import { userList, saveNewUser, editUser } from '../../utils/index';
     import { getToken } from '../../utils/function';
     export default {
         data () {
             return {
                 columns7: [
                     {
-                        title: '地址',
+                        title: '用户',
                         key: 'name',
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
-                                    props: {
+                                    ropps: {
                                         type: 'person'
                                     }
                                 }),
-                                h('strong', params.row.name)
+                                h('strong', params.row.username)
                             ]);
                         }
                     },
                     {
-                        title: '手机号',
-                        key: 'mobile',
+                        title: '密码',
+                        key: 'password',
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
-                                    props: {
+                                    ropps: {
                                         type: 'person'
                                     }
                                 }),
-                                h('strong', params.row.mobile)
+                                h('strong', params.row.password)
                             ]);
                         }
                     },
                     {
-                        title: '邮编',
-                        key: 'zipcode',
+                        title: '问题',
+                        key: 'question',
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
-                                    props: {
+                                    ropps: {
                                         type: 'person'
                                     }
                                 }),
-                                h('strong', params.row.zipcode)
+                                h('strong', params.row.question)
                             ]);
                         }
                     },
                     {
-                        title: '地址',
-                        key: 'address',
+                        title: '答案',
+                        key: 'nswer',
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
-                                    props: {
+                                    ropps: {
                                         type: 'person'
                                     }
                                 }),
-                                h('strong', params.row.address)
+                                h('strong', params.row.answer)
                             ]);
                         }
                     },
@@ -132,18 +122,18 @@
                                             this.show(params.index)
                                         }
                                     }
-                                }, '编辑'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.remove(params.index)
-                                        }
-                                    }
-                                }, '删除')
+                                }, '编辑')
+                                // h('Button', {
+                                //     props: {
+                                //         type: 'error',
+                                //         size: 'small'
+                                //     },
+                                //     on: {
+                                //         click: () => {
+                                //             this.remove(params.index)
+                                //         }
+                                //     }
+                                // }, '删除')
                             ]);
                         }
                     }
@@ -158,46 +148,26 @@
                 },
                 formData: {
                     id: '',
-                    name: '',
-                    mobile: '',
-                    zipcode: '',
-                    address: '',
+                    username: '',
+                    password: '',
+                    question: '',
+                    answer: '',
                 }
             }
         },
         methods: {
             show (index) {
                 this.formData.id = this.data6[index].id
-                this.formData.name = this.data6[index].name
-                this.formData.mobile = this.data6[index].mobile
-                this.formData.zipcode = this.data6[index].zipcode
-                this.formData.address = this.data6[index].address
+                this.formData.username = this.data6[index].username
+                this.formData.password = this.data6[index].password
+                this.formData.question = this.data6[index].question
+                this.formData.answer = this.data6[index].answer
                 this.value3 = true
             },
-            remove (index) {
-                console.log(this.data6[index])
-
-                if(confirm(`确定要将 “${this.data6[index].name}” 删除吗? `))
-                {
-                    let token = getToken();
-                    delectAddress ({
-                        token,
-                        id: this.data6[index].id
-                    }).then((res) => {
-                        let data = res.data;
-                        if(data.code != 0){
-                            this.$Message.error(data.msg);
-                        }else{
-                            this.$Message.success("删除地址成功");
-                            this.getAddressList();
-                        }
-                    })
-                }
-            },
-            // 获取地址列表
-            getAddressList() {
+            // 获取用户列表
+            getUserList() {
                 let token = getToken();
-                addressList({
+                userList({
                     token
                 }).then((res) => {
                     let data = res.data;
@@ -208,67 +178,67 @@
                     }
                 })
             },
-            // 添加地址
-            addAddress() {
+            // 添加用户
+            addUser() {
                 this.formData.id = '';
-                this.formData.name = '';
-                this.formData.mobile = '';
-                this.formData.zipcode = '';
-                this.formData.address = '';
+                this.formData.uesrname = '';
+                this.formData.password = '';
+                this.formData.question = '';
+                this.formData.answer = '';
                 this.value3 = true
             },
-            // 保存新地址
-            saveAddress() {
+            // 保存新用户
+            saveUser() {
                 let token = getToken();
                 // 新建
                 if(this.formData.id == '') {
-                    saveNewAddress({
+                    saveNewUser({
                         token,
-                        name: this.formData.name,
-                        mobile: this.formData.mobile,
-                        zipcode: this.formData.zipcode,
-                        address: this.formData.address,
+                        username: this.formData.username,
+                        password: this.formData.password,
+                        question: this.formData.question,
+                        answer: this.formData.answer,
                     }).then((res) => {
                         let data = res.data;
                         if(data.code != 0){
                             this.$Message.error(data.msg);
                         }else{
                             this.$Message.success("保存成功");
-                            this.formData.name = '';
-                            this.formData.mobile = '';
-                            this.formData.zipcode = '';
-                            this.formData.address = '';
+                            this.formData.uesrname = '';
+                            this.formData.password = '';
+                            this.formData.question = '';
+                            this.formData.answer = '';
                             this.value3 = false;
-                            this.getAddressList();
+                            this.getUserList();
                         }
                     })
                 } else{
-                    editAddress({
+                    editUser({
                         token,
                         id:this.formData.id,
-                        name: this.formData.name,
-                        mobile: this.formData.mobile,
-                        zipcode: this.formData.zipcode,
-                        address: this.formData.address,
+                        username: this.formData.username,
+                        password: this.formData.password,
+                        question: this.formData.question,
+                        answer: this.formData.answer,
                     }).then((res) => {
                         let data = res.data;
                         if(data.code != 0){
                             this.$Message.error(data.msg);
                         }else{
                             this.$Message.success("保存成功");
-                            this.formData.name = '';
-                            this.formData.mobile = '';
-                            this.formData.zipcode = '';
-                            this.formData.address = '';
+                            this.formData.uesrname = '';
+                            this.formData.password = '';
+                            this.formData.question = '';
+                            this.formData.answer = '';
                             this.value3 = false;
-                            this.getAddressList();
+                            this.getUserList();
                         }
                     })
                 }
             }
         },
         mounted() {
-            this.getAddressList();
+            this.getUserList();
         }
     }
 </script>
@@ -284,3 +254,4 @@
         background: #fff;
     }
 </style>
+

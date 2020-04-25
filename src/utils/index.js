@@ -2,7 +2,6 @@ import { post } from './ajax'
 // 请求
 // 线上环境地址
 const baseUrl = 'http://localhost:3014'
-
 // 注册账号
 export const register = data => post(`${baseUrl}/register`, data);
 // 验证密保
@@ -67,11 +66,11 @@ export const delectGoods = data => post(`${baseUrl}/goods/delete`, data);
 // 商品详情
 export const goodsDetail = data => post(`${baseUrl}/goods/detail`, data);
 
+// 商品详情
+export const addressDetail = data => post(`${baseUrl}/address/detail`, data);
+
 //获取地址列表
 export const addressList = data => post(`${baseUrl}/address`, data);
-
-//获取地址详情
-export const addressDetail = data => post(`${baseUrl}/address/detail`, data);
 
 // 添加地址
 export const saveNewAddress = data => post(`${baseUrl}/address/create`, data);
@@ -82,8 +81,11 @@ export const editAddress = data => post(`${baseUrl}/address/edit`, data);
 // 删除地址
 export const delectAddress = data => post(`${baseUrl}/address/delete`, data);
 
-//创建订单
+//创建购物车
 export const createOrder = data => post(`${baseUrl}/order/create`, data);
+
+//生成订单
+export const createOrder1 = data => post(`${baseUrl}/order/create1`, data);
 //删除订单
 export const delectOrder = data => post(`${baseUrl}/order/delete`, data);
 //购物车列表
@@ -91,7 +93,6 @@ export const orderList = data => post(`${baseUrl}/order`, data);
 
 //订单列表
 export const orderList1 = data => post(`${baseUrl}/order1`, data);
-
 //历史购买记录
 export const orderList2 = data => post(`${baseUrl}/order2`, data);
 
