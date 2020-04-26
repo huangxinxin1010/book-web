@@ -104,3 +104,6 @@ export const orderStatus = data => post(`${baseUrl}/order/status`, data);
 
 // 编辑用户
 export const editOrder = data => post(`${baseUrl}/order/edit`, data);
+
+//创建记录
+export const createRecord = data => post(`${baseUrl}/record/create`, data);

@@ -326,7 +326,7 @@
             },
             //支付
             bulidOrder(index) {
-                if(confirm(`正在支付，请点击“确定”！ `)) {
+                if(confirm(`点击“确定”，即可完成支付！ `)) {
                     this.alterOrderStatus(index, 2)
                 } },
             //取消订单
