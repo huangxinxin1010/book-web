@@ -67,6 +67,12 @@
                 <div class="info-item" v-if="this.sendareas!=''">
                     发货地: {{this.sendareas}}
                 </div>
+                <div class="info-item" v-if="this.category.name!=''">
+                    分类: {{this.category.name}}
+                </div>
+                <div class="info-item" v-if="this.rank.name!=''">
+                    排行榜: {{this.rank.name}}
+                </div>
                 </div>
             </div>
         <footerBlock></footerBlock>
@@ -113,6 +119,14 @@
                 isShow: false,
                 categoryId:'',
                 keyword:'',
+                category:
+                    {
+                        name:'',
+                    },
+                rank:
+                    {
+                        name:'',
+                    },
 
             }
         },
@@ -139,6 +153,8 @@
                             this.image = data.data.image  ? data.data.image : '';
                             this.price = data.data.price  ? data.data.price : '';
                             this.categoryId = data.data.categoryId  ? data.data.categoryId : '';
+                            this.category.name = data.data.category.name  ? data.data.category.name : '';
+                            this.rank.name = data.data.rank.name  ? data.data.rank.name : '';
                              let keyword=this.categoryId;
                             createRecord({
                               token,
@@ -322,7 +338,7 @@
             padding 15px 0
             overflow hidden
             .info-item
-                width 25%
+                width 33%
                 float: left
                 padding 10px 0
                 font-size 18px

@@ -12,6 +12,7 @@
                     <div class="item-top">
                         <img :src="item.image" alt="">
                     </div>
+                    <div class="item-info-price">￥{{item.price}}</div>
                     <div class="item-bottom">
                         {{item.name}}
                     </div>
@@ -90,7 +91,7 @@
                 .hot-item
                     float: left
                     width 260px
-                    height 270px
+                    height 300px
                     margin-right 34px
                     margin-bottom 34px
                     .item-top
@@ -113,6 +114,10 @@
                         -webkit-box-orient: vertical;
                         -webkit-line-clamp: 2;
                         overflow: hidden;
+                      .item-info-price
+                        color #e4393c
+                        font-size 20px
+                        font-weight 400
                 .hot-item:hover
                     transform translate3d(0, -2px, 0)
                     box-shadow 0 15px 30px rgba(0,0,0,0.1)

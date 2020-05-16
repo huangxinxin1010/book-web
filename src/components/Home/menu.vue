@@ -25,7 +25,6 @@
                 value: '',
                 rankList: [],
                 id: '',
-                keyword:''
             }
         },
         methods: {
@@ -52,7 +51,7 @@
                 this.$router.push({
                     path: '/list',
                     query: {
-                        name: this.value
+                        name:this.value
                     }
                 })
             }, searchRank(id) {

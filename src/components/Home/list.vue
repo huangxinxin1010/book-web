@@ -12,9 +12,15 @@
                         <img :src="item.image" alt="">
                     </div>
                     <div class="item-info">
-                        <div class="item-info-price">￥{{item.price}}</div>
+                        <div class="item-info-price">售价：￥{{item.price}}</div>
                         <div class="item-info-name">
-                            {{item.name}}
+                            图书：{{item.name}}
+                        </div>
+                        <div class="item-info-name">
+                            分类：{{item.category.name}}
+                        </div>
+                        <div class="item-info-name">
+                            排行榜：{{item.rank.name}}
                         </div>
                     </div>
                 </div>
@@ -34,7 +40,15 @@
         name: "list",
         data() {
             return {
-                list: []
+                list: [],
+                category:
+                    {
+                        name:'',
+                    },
+                rank:
+                    {
+                        name:'',
+                    }
             }
         },
         components: {
@@ -152,6 +166,7 @@
                     font-weight 400
                 .item-info-name
                     color #666
+                    font-size 16px
         .commodityItem:hover
             transform translate3d(0, -2px, 0)
             box-shadow 0 15px 30px rgba(0,0,0,0.1)
