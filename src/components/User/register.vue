@@ -46,7 +46,8 @@
 
 
 <script>
-    import { register } from '../../utils/index';
+    import {createRecord, register} from '../../utils/index';
+    import {getToken} from "../../utils/function";
     export default {
         data() {
             return {
@@ -54,7 +55,8 @@
                     user: '',
                     password: '',
                     question: '',
-                    answer: ''
+                    answer: '',
+                    keyword:'',
                 },
                 ruleInline: {
                     user: [
@@ -107,6 +109,7 @@
                                 this.$router.push({
                                     path: '/user/login'
                                 })
+
                             }else if(data.code == 1){
                                 this.$Message.error(data.errMsg);
                             }

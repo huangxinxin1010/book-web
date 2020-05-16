@@ -55,7 +55,6 @@
                     }).then((res) => {
                         console.log(res)
                         let data = res.data;
-
                         if(data.code != 0){
                             this.$Message.error(data.msg);
                         }else{

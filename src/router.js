@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import List from './components/Home/list.vue'
 import ProductDetail from './components/Home/productDetail.vue'
-import ResultComparison from './components/Home/resultComparison.vue'
 import User from './views/User.vue'
 import Login from './components/User/login'
 import Register from './components/User/register'
@@ -41,11 +40,7 @@ export default new Router({
             name: 'productDetail',
             component: ProductDetail
         },
-        {
-            path: '/resultComparison',
-            name: 'resultComparison',
-            component: ResultComparison
-        },
+
         {
             path: '/user',
             name: 'user',

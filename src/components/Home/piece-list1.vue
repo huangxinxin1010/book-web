@@ -1,11 +1,11 @@
 <template>
-    <div class="piece-list">
+    <div class="piece-list1">
         <div class="piece-title">
-            热门图书
+            推荐图书
         </div>
         <div class="piece-content">
             <div class="hot-left">
-                <img src="../../assets/images/hotBanner.jpg" alt="">
+                <img src="../../assets/images/hotBanner1.jpg" alt="">
             </div>
             <div class="hot-right">
                 <div class="hot-item" v-for="item in list" @click="productDetail(item.id)">
@@ -18,35 +18,59 @@
                 </div>
             </div>
         </div>
-        <div class="border"></div>
+
     </div>
+
 </template>
 
 <script>
     import { getToken } from '../../utils/function';
     import { goodsList} from '../../utils/index';
+    import {recordDetail} from "../../utils";
     export default {
-        name: "piece-list",
+        name: "piece-list1",
         data() {
             return {
                 list: [],
+                categoryId:'',
+                keyword:'',
             }
         },
         methods: {
             getGoodsList: function () {
                 let token = getToken();
-                goodsList({
+                recordDetail({
                     token,
-                    pageSize: 8
                 }).then((res) => {
                     let data = res.data;
                     if (data.code != 0) {
                         this.$Message.error(data.msg);
+
                     } else {
-                        this.list = data.dataList
-                        console.log(this.list)
+                        if(data.data==null)
+                        {
+                            this.keyword='87cd8e67149742e4b853d01eee5e3363';
+                        }else{
+                        this.keyword = data.data.keyword  ? data.data.keyword : '';
+                        }
                     }
+                    let categoryId=this.keyword;
+                    goodsList({
+                        token,
+                        pageSize: 4,
+                        categoryId,
+                    }).then((res) => {
+                        console.log(categoryId)
+                        let data = res.data;
+                        if (data.code != 0) {
+                            this.$Message.error(data.msg);
+                        } else {
+                            this.list = data.dataList
+                            console.log(this.list)
+                        }
+                    })
                 })
+
             },
             productDetail(id) {
                 this.$router.push({
@@ -64,7 +88,7 @@
 </script>
 
 <style lang="stylus" scoped>
-    .piece-list
+    .piece-list1
         width 1440px
         margin 15px auto
         .piece-title
@@ -115,9 +139,10 @@
                         overflow: hidden;
                 .hot-item:hover
                     transform translate3d(0, -2px, 0)
+                    //box-shadow阴影，x坐标、y坐标、模糊程度、颜色
                     box-shadow 0 15px 30px rgba(0,0,0,0.1)
             .hot-item:nth-child(4n)
                 margin-right 0
-    .border
-        border-bottom  6px solid coral
+
+
 </style>

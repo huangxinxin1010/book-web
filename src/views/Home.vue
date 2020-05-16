@@ -5,6 +5,7 @@
         <banner></banner>
         <category></category>
         <pieceList></pieceList>
+        <pieceList1></pieceList1>
         <footerBlock></footerBlock>
     </div>
 </template>
@@ -15,6 +16,7 @@
     import banner from '@/components/Home/banner';
     import category from '@/components/Home/category';
     import pieceList from '@/components/Home/piece-list';
+    import pieceList1 from '@/components/Home/piece-list1';
     import footerBlock from '@/components/Home/footerBlock';
 
     export default {
@@ -25,6 +27,7 @@
             banner,
             category,
             pieceList,
+            pieceList1,
             footerBlock
         }
     }

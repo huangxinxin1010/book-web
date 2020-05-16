@@ -16,7 +16,7 @@
                     <Button type="success" @click="clickBuy">加入购物车</Button>
                     <Button type="warning" style="margin-left: 20px" @click="clickBuy1">立即购买</Button>
                 </div>
-                <Modal
+                    <Modal
                         v-model="modal1"
                         title="选择收货人"
                         @on-ok="ok">
@@ -70,25 +70,23 @@
                 </div>
             </div>
         <footerBlock></footerBlock>
-        <compare></compare>
-        </div>
+    </div>
 
 </template>
 
 <script>
     import { getToken } from '../../utils/function';
-    import { createOrder, createOrder1,addressList, addressDetail, goodsDetail } from '../../utils/index'
+    import {createOrder, createOrder1, addressList, addressDetail, goodsDetail, createRecord} from '../../utils/index'
     import topCont from '@/components/Home/top-cont';
     import menuVue from '@/components/Home/menu';
     import footerBlock from '@/components/Home/footerBlock';
-    import compare from '@/components/Home/compare';
+    // import compare from '@/components/Home/compare';
     export default {
         name: "product-detail",
         components: {
             topCont,
             menuVue,
             footerBlock,
-            compare
         },
         // 函数对象
         data() {
@@ -112,7 +110,10 @@
                 sendareas: '',
                 image: '',
                 price: '',
-                isShow: false
+                isShow: false,
+                categoryId:'',
+                keyword:'',
+
             }
         },
         methods: {
@@ -137,8 +138,22 @@
                             this.sendareas = data.data.sendareas  ? data.data.sendareas : '';
                             this.image = data.data.image  ? data.data.image : '';
                             this.price = data.data.price  ? data.data.price : '';
+                            this.categoryId = data.data.categoryId  ? data.data.categoryId : '';
+                             let keyword=this.categoryId;
+                            createRecord({
+                              token,
+                               keyword:this.categoryId
+                           }).then((res) => {
+                              console.log(keyword)
+                              let data = res.data;
+                              console.log(data)
+                            if(data.code != 0){
+                                this.$Message.error(data.err);
+                            }
+                        })
                     }
                 })
+
             },
             ok () {
 
@@ -281,6 +296,7 @@
                 font 20px Arial,"microsoft yahei"
                 color #666
                 padding-top 20px
+                font-size 24px
                 line-height 28px
                 margin-bottom 30px
             .price
@@ -290,7 +306,7 @@
                     color #e4393c
                     font-size 20px
             .tip
-                font-size 12px
+                font-size 16px
                 color #999
                 padding 15px 0
             .bottom
@@ -300,7 +316,8 @@
         margin 0 auto
         .info-title
             padding 15px 0
-            border-bottom 1px solid #999
+            font-size 18px
+            border-bottom 2px solid #FF5511
         .info-list
             padding 15px 0
             overflow hidden
@@ -308,4 +325,5 @@
                 width 25%
                 float: left
                 padding 10px 0
+                font-size 18px
 </style>

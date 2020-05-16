@@ -45,14 +45,14 @@
             </Form>
             <div class="demo-drawer-footer">
                 <Button style="margin-right: 8px" @click="value3 = false">取消</Button>
-                <Button type="primary" @click="saveUser">保存</Button>
+<!--                <Button type="primary" @click="saveUser">保存</Button>-->
             </div>
         </Drawer>
     </div>
 
 </template>
 <script>
-    import {userList1, saveNewUser, editUser, delectUser} from '../../utils/index';
+    import {userList1,delectUser} from '../../utils/index';
     import { getToken } from '../../utils/function';
     export default {
         data () {

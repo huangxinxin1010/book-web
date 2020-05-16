@@ -31,7 +31,7 @@ const mutations={
     returnProductList() {
         let product = state.product
         router.push({
-            path: '/resultComparison'
+            // path: '/resultComparison'
         })
     }
 }

@@ -107,3 +107,6 @@ export const editOrder = data => post(`${baseUrl}/order/edit`, data);
 
 //创建记录
 export const createRecord = data => post(`${baseUrl}/record/create`, data);
+
+//推荐图书-查找关键字
+export const recordDetail = data => post(`${baseUrl}/record/detail`, data);

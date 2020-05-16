@@ -55,20 +55,6 @@
                         name: this.value
                     }
                 })
-                    let token = getToken();
-                    let keyword=this.value
-                console.log(this.value)
-                    createRecord({
-                        token,
-                        keyword:this.value
-                    }).then((res) => {
-                        console.log(keyword)
-                        let data = res.data;
-                        console.log(data)
-                        if(data.code != 0){
-                            this.$Message.error(data.err);
-                        }
-                    })
             }, searchRank(id) {
                 this.$router.push({
                     path: '/list',
