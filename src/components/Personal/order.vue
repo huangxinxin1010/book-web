@@ -12,7 +12,7 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="数量：" label-position="top">
-                            <Input v-model="formData.info.quantity" placeholder="数量" />
+                            <Input v-model="formData.info.quantity" placeholder="请输入大于0的整数!" />
                         </FormItem>
                     </Col>
                 </Row>
@@ -38,9 +38,24 @@
                 modal2: false,
                 columns7: [
                     {
+                        title: '订单编号',
+                        key: 'id',
+                        width: 150,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.id)
+                            ]);
+                        }
+                    },
+                    {
                         title: '商品',
                         key: 'name',
-                        width: 300,
+                        width: 250,
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
@@ -172,7 +187,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 300,
+                        width: 270,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
@@ -266,6 +281,7 @@
                         status: 0,
                         quantity: '',
                         totalPrice:'',
+                        id:'',
 
                     },
                 }
@@ -371,10 +387,12 @@
                 var totalPrice = number*this.data6[index].good.price
                 console.log('totalPrice  '+totalPrice)
                 let token = getToken();
+                let quantity=this.formData.info.quantity;
+                if(quantity>0){
                 editOrder({
                     token,
                     id: this.data6[index].id,
-                    quantity: this.formData.info.quantity,
+                    quantity,
                     totalPrice
                 }).then((res) => {
                     console.log("this.data6[this.formIndex].id"+this.data6[index].id)
@@ -389,6 +407,9 @@
                     }
                 })
 
+            }else{
+                    this.$Message.error("请输入大于0的整数！");
+                }
             }
         },
         mounted() {

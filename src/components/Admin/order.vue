@@ -38,6 +38,21 @@
                 modal2: false,
                 columns7: [
                     {
+                        title: '订单编号',
+                        key: 'id',
+                        width: 150,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.id)
+                            ]);
+                        }
+                    },
+                    {
                         title: '用户名',
                         key: 'username',
                         render: (h, params) => {
@@ -194,7 +209,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 150,
+                        width: 100,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [

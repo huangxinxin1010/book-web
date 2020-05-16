@@ -33,9 +33,24 @@
                 modal2: false,
                 columns7: [
                     {
+                        title: '订单编号',
+                        key: 'id',
+                        width: 150,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.id)
+                            ]);
+                        }
+                    },
+                    {
                         title: '商品',
                         key: 'name',
-                        width: 300,
+                        width: 250,
                         render: (h, params) => {
                             return h('div', [
                                 h('Icon', {
