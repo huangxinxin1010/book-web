@@ -247,6 +247,8 @@
                         this.modal1 = true
                         this.selectList = data.data.rows
                         console.log(this.selectList)
+                        // var arr1 = [{id:1,name:'支付宝'},{id:2,name:'微信'},{id:2,name:'银行卡'}];
+                        // document.write(arr1[2] + '<br>');
                     }
                 })
             },

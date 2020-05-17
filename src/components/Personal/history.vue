@@ -167,9 +167,13 @@
                             let orderStatus =  params.row.status
                             let orderStatusText = ''
                             if(orderStatus == 2) {
-                                orderStatusText = '支付成功'
-                            } else if(orderStatus == 3) {
                                 orderStatusText = '取消订单'
+                            } else if(orderStatus == 3) {
+                                orderStatusText = '支付宝-支付成功'
+                            }else if(orderStatus == 4) {
+                                orderStatusText = '微信-支付成功'
+                            }else if(orderStatus == 5) {
+                                orderStatusText = '银行卡-支付成功'
                             }
                             return h('div', [
                                 h('Icon', {

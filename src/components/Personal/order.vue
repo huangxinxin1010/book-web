@@ -22,11 +22,25 @@
                 <Button type="primary" @click="saveQuantity">保存</Button>
             </div>
         </Drawer>
+        <Modal
+                v-model="modal1"
+                title="选择支付方式"
+                @on-ok="ok">
+            <Form :model="formItem" :label-width="80">
+                <FormItem label="支付方式">
+                    <Select v-model="formItem.select" @on-change='selectPay(formItem.select)'>
+                        <Option :value="item.id" v-for="item in this.selectList" :key="item.id">{{item.name}}</Option>
+                    </Select>
+                </FormItem>
+            </Form>
+
+            {{formItem.word1}}<img :src="formItem.image" alt="">{{formItem.word2}}
+        </Modal>
     </div>
 
 </template>
 <script>
-    import { orderList1, orderStatus} from '../../utils/index';
+    import {addressDetail, addressList, createOrder, orderList1, orderStatus} from '../../utils/index';
     import { getToken } from '../../utils/function';
     import {delectOrder, editOrder} from "../../utils";
     import index from "iview/src/components/loading-bar";
@@ -34,8 +48,16 @@
         data () {
             return {
                 formIndex: '',
-                modal1: false,
-                modal2: false,
+                modal1:false,
+                selectList: [],
+                formItem: {
+                    select: '',
+                    id: '',
+                    name: '',
+                    image: '',
+                    word1: '',
+                    word2: '',
+                },
                 columns7: [
                     {
                         title: '订单编号',
@@ -235,6 +257,7 @@
                                         click: () => {
                                             this.bulidOrder(params.index)
                                             this.formData.info = params.row
+                                            this.formIndex = params.index
                                         }
                                     }
                                 }, '支付'),
@@ -248,8 +271,9 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.cancleOrder(params.index)
+                                            this.formIndex = params.index
                                             this.formData.info = params.row
+                                            this.cancleOrder(params.index)
                                         }
                                     }
                                 }, '取消订单')
@@ -340,31 +364,87 @@
                     })
                 }
             },
+            ok () {
+                console.log(this.formItem.select)
+                if(this.formItem.select == ''){
+                    this.$Message.error("请选择支付方式");
+                    return false
+                }
+                if (this.formItem.name=='支付宝'){
+                    this.alterOrderStatus(index, 3)
+                }
+                if (this.formItem.name=='微信'){
+                    this.alterOrderStatus(index, 4)
+                }
+                if (this.formItem.name=='银行卡'){
+                    this.alterOrderStatus(index, 5)
+                }
+            },
             //支付
+            // bulidOrder(index) {
+            //     if(confirm(`点击“确定”，即可完成支付！ `)) {
+            //         this.alterOrderStatus(index, 3)
+            //     } },
             bulidOrder(index) {
-                if(confirm(`点击“确定”，即可完成支付！ `)) {
-                    this.alterOrderStatus(index, 2)
-                } },
+                this.getPayList()
+            },
+            getPayList() {
+                this.modal1 = true;
+                const arr1 = [{id:1,name:'支付宝',image:'https://ae03.alicdn.com/kf/H658c59761ac44e9e9d27a68186aa1a047.jpg',word1:'正在使用',word2:'进行支付~'},{id:2,name:'微信',image:'https://ae03.alicdn.com/kf/H48688a9b815443808a92b8edd58f2903z.jpg',word1:'正在使用',word2:'进行支付~'},{id:3,name:'银行卡',image:'https://ae03.alicdn.com/kf/H8b8770570abe40fc990ad31a566e015dd.jpg',word1:'正在使用',word2:'进行支付~'}];
+                // const arr2=JSON.stringify(arr1);
+                // this.selectList=JSON.parse(arr2) ;
+                this.selectList=arr1
+                console.log(this.selectList)
+            },
+            selectPay(id) {
+                console.log("**************"+id)
+                if(id==1){
+                this.formItem.id = 1;
+                this.formItem.name = '支付宝';
+                this.formItem.image = 'https://ae03.alicdn.com/kf/H658c59761ac44e9e9d27a68186aa1a047.jpg';
+                this.formItem.word1 = '正在使用';
+                this.formItem.word2 = '进行支付~';
+                }
+                if(id==2){
+                    this.formItem.id = 2;
+                    this.formItem.name = '微信';
+                    this.formItem.image = 'https://ae03.alicdn.com/kf/H48688a9b815443808a92b8edd58f2903z.jpg';
+                    this.formItem.word1 = '正在使用';
+                    this.formItem.word2 = '进行支付~';
+                }
+                if(id==3){
+                    this.formItem.id = 3;
+                    this.formItem.name = '银行卡';
+                    this.formItem.image = 'https://ae03.alicdn.com/kf/H8b8770570abe40fc990ad31a566e015dd.jpg';
+                    this.formItem.word1 = '正在使用';
+                    this.formItem.word2 = '进行支付~';
+                }
+
+            },
             //取消订单
             cancleOrder(index) {
                 if(confirm(`取消订单后不可恢复，确定要取消“ ${this.data6[index].good.name} ”订单吗? `)) {
-                this.alterOrderStatus(index,3)
+                this.alterOrderStatus(index,2)
                 }
             },
             // 改变订单状态
             alterOrderStatus(index,status) {
-                console.log('_____________________'+this.data6[index].id)
+
+                console.log("-----"+this.formIndex)
+                console.log(this.data6[this.formIndex].id)
+                console.log('_______________index______'+index)
+                console.log('_____________________')
                 let token = getToken();
                 orderStatus({
                     token,
                     status,
-                    id:this.data6[index].id
+                    id:this.data6[this.formIndex].id
                 }).then((res) => {
                     let data = res.data;
                     if(data.code != 0){
                         this.$Message.error(data.err);
                     }else{
-                        this.$Message.success('支付成功！');
+                        this.$Message.success('操作成功！');
                         this.value3 = false
                         this.getOrderList1();
                     }
